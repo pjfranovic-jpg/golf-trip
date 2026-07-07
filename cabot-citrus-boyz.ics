@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Cabot Citrus Boyz//Golf Trip//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:cabot-citrus-boyz-2026@pjfranovic.github.io
+DTSTAMP:20260706T120000Z
+DTSTART;VALUE=DATE:20261119
+DTEND;VALUE=DATE:20261123
+SUMMARY:Cabot Citrus Boyz — Golf Trip
+LOCATION:Cabot Citrus Farms, 17784 Farmers Way, Brooksville, FL 34614
+DESCRIPTION:Eight friends, six rounds at Cabot Citrus Farms. Details: https://pjfranovic-jpg.github.io/golf-trip/
+URL:https://pjfranovic-jpg.github.io/golf-trip/
+END:VEVENT
+END:VCALENDAR
