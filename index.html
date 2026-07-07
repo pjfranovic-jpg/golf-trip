@@ -229,7 +229,7 @@
   /* ---------- closing ---------- */
   .closing{
     background:var(--green-dark); color:var(--bone); text-align:center;
-    padding:min(16vh,140px) 6vw; position:relative; overflow:hidden;
+    padding:min(6vh,48px) 6vw min(13vh,110px); position:relative; overflow:hidden;
   }
   .closing h2{font-family:'Fraunces',serif; font-weight:500; font-size:clamp(2rem,6vw,3.4rem); line-height:1.1;}
   .closing h2 em{color:var(--fruit-light); font-style:italic; font-weight:300;}
@@ -388,12 +388,22 @@
   .cost-total-label{font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--orange-dark); font-weight:700;}
   .cost-total-fig{font-family:'Fraunces',serif; font-weight:600; font-size:clamp(3rem,11vw,5rem); line-height:1; color:var(--orange-dark); margin:8px 0 12px;}
   .cost-total-sub{max-width:520px; margin:0 auto; font-size:13px; line-height:1.6; opacity:.72;}
-  #film{padding:min(10vh,80px) 6vw;}
+  #film{padding:min(10vh,80px) 6vw min(3vh,24px);}
   .film-frame{max-width:900px; margin:26px auto 0; border-radius:10px; overflow:hidden; background:#000; box-shadow:0 30px 70px -30px rgba(0,0,0,.7);}
   .film-vid{display:block; width:100%; height:auto;}
   .hbh-btn{display:inline-flex; align-items:center; gap:8px; margin-top:22px; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--bone); background:var(--orange-dark); padding:11px 18px; border-radius:100px; text-decoration:none; box-shadow:0 12px 26px -14px rgba(0,0,0,.5);}
   .hbh-btn:hover{background:var(--green-dark);}
   .hbh-btn svg{width:14px; height:14px; fill:currentColor;}
+  .closing-mark{height:0.62em; width:0.44em; display:inline-block; vertical-align:-0.02em; margin-left:0.16em;}
+  .closing-actions{margin-top:32px; display:flex; flex-direction:column; align-items:center; gap:18px;}
+  .proshop-link{font-family:'Fraunces',serif; font-weight:600; font-size:clamp(2rem,6vw,3.2rem); line-height:1; color:var(--orange); text-decoration:none;}
+  .proshop-link:hover{color:var(--fruit-light);}
+  .cal-btn{display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--green-dark); background:var(--bone); padding:12px 20px; border-radius:100px; text-decoration:none;}
+  .cal-btn:hover{background:var(--cream);}
+  .stakes{margin-top:24px; text-align:center;}
+  .stakes-label{font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--fruit-light); font-weight:700; margin-bottom:8px;}
+  .stakes-text{max-width:540px; margin:0 auto; font-family:'Fraunces',serif; font-size:1.05rem; line-height:1.5; color:var(--bone);}
+  .stakes-text b{color:var(--fruit-light); font-weight:600;}
 </style>
 </head>
 <body>
@@ -1069,7 +1079,8 @@
       </div>
       <p class="day-blurb">Split fair by handicap for the trip match &mdash; 58.8 to 58.6, about as even as it gets. The spread of golf pairings is even across the whole group, too.</p>
     </div>
-        <div class="teams">
+        <div class="crew-bottom">
+      <div class="teams">
       <div class="team team-green">
         <div class="team-head"><span class="team-name">Team Hurd</span><span class="team-total">Total <b>58.8</b></span></div>
         <ul class="team-roster">
@@ -1088,6 +1099,11 @@
           <li><span class="p-name"><svg class="icon crew-icon"><use href="#ic-orange" xlink:href="#ic-orange"/></svg>Josh Schanen</span><span class="p-hcp">HCP <b>15.8</b></span></li>
           <li><span class="p-name"><svg class="icon crew-icon"><use href="#ic-orange" xlink:href="#ic-orange"/></svg>Amit Patel</span><span class="p-hcp">HCP <b>19.4</b></span></li>
         </ul>
+      </div>
+    </div>
+      <div class="stakes">
+        <div class="stakes-label">The Stakes</div>
+        <p class="stakes-text">Everyone throws in <b>$100</b> before the first tee. The team with the <b>lowest combined strokes</b> across all six rounds takes the <b>$800 pot</b> &mdash; winner take all.</p>
       </div>
     </div>
   </div>
@@ -1118,14 +1134,17 @@
         Your browser doesn't support the video tag.
       </video>
     </div>
-    <p class="wx-note" style="margin-top:16px;">Cabot's own film of the property &mdash; this is what we're walking into.</p>
   </div>
 </section>
 
 <section class="closing">
   <div class="reveal">
-    <h2>See you on <em>the first tee.</em></h2>
+    <h2>See you on <em>the first tee</em><svg class="closing-mark" aria-hidden="true"><use href="#ic-cabotmark" xlink:href="#ic-cabotmark"/></svg></h2>
     <div class="date">November 19&ndash;22, 2026 &middot; Cabot Citrus Farms</div>
+    <div class="closing-actions">
+      <a class="proshop-link" href="https://shop.thecabotcollection.com/pages/storefront/cabotcitrusfarms" target="_blank" rel="noopener">Pro Shop</a>
+      <a class="cal-btn" href="cabot-citrus-boyz.ics">&#128197; Add to Calendar</a>
+    </div>
   </div>
 </section>
 
