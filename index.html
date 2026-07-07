@@ -388,6 +388,9 @@
   .cost-total-label{font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--orange-dark); font-weight:700;}
   .cost-total-fig{font-family:'Fraunces',serif; font-weight:600; font-size:clamp(3rem,11vw,5rem); line-height:1; color:var(--orange-dark); margin:8px 0 12px;}
   .cost-total-sub{max-width:520px; margin:0 auto; font-size:13px; line-height:1.6; opacity:.72;}
+  #film{padding:min(10vh,80px) 6vw;}
+  .film-frame{max-width:900px; margin:26px auto 0; border-radius:10px; overflow:hidden; background:#000; box-shadow:0 30px 70px -30px rgba(0,0,0,.7);}
+  .film-vid{display:block; width:100%; height:auto;}
 </style>
 </head>
 <body>
@@ -1094,6 +1097,21 @@
       <div class="wx-updated" id="wx-updated"></div>
     </div>
     <p class="wx-note">Right now these are <b>historical averages</b> for our four days &mdash; drawn from about a decade of records. As soon as the trip is inside the ~2-week forecast window, this flips to the live forecast automatically.</p>
+  </div>
+</section>
+
+<!-- FILM -->
+<section class="day tone-dark" id="film">
+  <div class="wrap reveal" style="text-align:center;">
+    <div class="day-eyebrow" style="color:var(--fruit-light);">Roll the Tape</div>
+    <h2 class="serif" style="margin-top:8px; font-size:clamp(1.8rem,4.5vw,2.8rem);">The Place</h2>
+    <div class="film-frame">
+      <video class="film-vid" controls autoplay muted loop playsinline preload="metadata">
+        <source src="cabot-citrus-film.mp4" type="video/mp4">
+        Your browser doesn't support the video tag.
+      </video>
+    </div>
+    <p class="wx-note" style="margin-top:16px;">Cabot's own film of the property &mdash; this is what we're walking into.</p>
   </div>
 </section>
 
