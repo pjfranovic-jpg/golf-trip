@@ -440,6 +440,28 @@
   .boyz-toast{position:fixed; left:50%; bottom:12%; transform:translateX(-50%) translateY(30px); z-index:300; background:var(--green-dark); color:var(--bone); font-family:'Fraunces',serif; font-weight:600; font-size:clamp(1.1rem,3.5vw,1.5rem); padding:15px 30px; border-radius:100px; box-shadow:0 24px 55px -20px rgba(0,0,0,.6); opacity:0; transition:opacity .4s ease, transform .4s cubic-bezier(.2,.9,.3,1.4); pointer-events:none;}
   .boyz-toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
   @media (prefers-reduced-motion: reduce){ .wx-ic,.hero .eyebrow,.hero h1,.hero .sub{animation:none;} }
+  /* ===== fun, part 3 ===== */
+  .confetti-pc{z-index:500;}
+  #putt-open{position:fixed; left:16px; bottom:16px; z-index:180; background:var(--green); color:var(--bone); border:none; font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:11px 16px; border-radius:100px; cursor:pointer; box-shadow:0 10px 24px -10px rgba(0,0,0,.5); transition:transform .2s ease, background .2s ease;}
+  #putt-open:hover{background:var(--green-dark); transform:translateY(-2px);}
+  #putt-modal{position:fixed; inset:0; z-index:400; background:rgba(20,14,8,.72); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center;}
+  #putt-modal.open{display:flex;}
+  .putt-card{background:var(--bone); border-radius:16px; padding:20px; width:min(92vw,340px); text-align:center; box-shadow:0 30px 70px -20px rgba(0,0,0,.7);}
+  .putt-card h3{font-family:'Fraunces',serif; color:var(--orange-dark); font-size:1.4rem;}
+  .putt-card .putt-sub{font-size:11.5px; opacity:.65; margin:2px 0 12px;}
+  #putt-canvas{border-radius:12px; touch-action:none; cursor:grab; display:block; margin:0 auto; max-width:100%;}
+  .putt-msg{height:20px; margin-top:10px; font-family:'Fraunces',serif; font-weight:600; color:var(--green);}
+  .putt-stats{display:flex; justify-content:center; gap:22px; margin-top:8px; font-family:'JetBrains Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--green);}
+  .putt-stats b{color:var(--ink); font-size:14px; margin-left:5px;}
+  .putt-close{margin-top:14px; background:none; border:1px solid var(--line); border-radius:100px; padding:8px 20px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; color:var(--ink);}
+  .scroll-ball{position:fixed; right:9px; top:20px; z-index:120; width:15px; height:15px; border-radius:50%; background:radial-gradient(circle at 35% 30%,#fff,#d6d6d6); box-shadow:0 2px 6px rgba(0,0,0,.35), inset -2px -2px 3px rgba(0,0,0,.15); pointer-events:none; transition:top .12s linear;}
+  @keyframes partyhue{to{filter:hue-rotate(360deg);}}
+  body.party{animation:partyhue 2.5s linear infinite;}
+  @keyframes wiggle{0%,100%{transform:rotate(0);}25%{transform:rotate(.5deg);}75%{transform:rotate(-.5deg);}}
+  body.party section{animation:wiggle .45s ease-in-out infinite;}
+  .fore-pop{position:fixed; z-index:500; pointer-events:none; font-family:'Fraunces',serif; font-style:italic; font-weight:700; color:var(--orange-dark); font-size:22px; text-shadow:0 2px 6px rgba(0,0,0,.25); will-change:transform,opacity; animation:forepop 1s ease-out forwards;}
+  @keyframes forepop{0%{opacity:1; transform:translate(-50%,-50%) scale(.6) rotate(-6deg);}100%{opacity:0; transform:translate(-50%,-170%) scale(1.1) rotate(-6deg);}}
+  @media (prefers-reduced-motion: reduce){ body.party{animation:none;} body.party section{animation:none;} .scroll-ball{transition:none;} }
 </style>
 </head>
 <body>
@@ -1357,6 +1379,60 @@
       document.body.appendChild(s); setTimeout(function(){s.remove();},850);
     });
   }
+})();
+</script>
+<script>
+(function(){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  var COLS=['#DD7A34','#EFA159','#6FAE5E','#47603F','#FBF8F2','#D97834'];
+  function confetti(x,y,n){ if(reduce)return; for(var i=0;i<(n||60);i++){ var p=document.createElement('div'); p.className='confetti-pc'; if(Math.random()<.25){p.textContent='🍊'; p.style.fontSize=(14+Math.random()*12)+'px';} else {p.style.width=(6+Math.random()*6)+'px'; p.style.height=(8+Math.random()*9)+'px'; p.style.background=COLS[Math.floor(Math.random()*COLS.length)]; p.style.borderRadius=Math.random()<.5?'2px':'50%';} p.style.left=x+'px'; p.style.top=y+'px'; var a=Math.random()*6.283, d=90+Math.random()*280; p.style.setProperty('--dx',(Math.cos(a)*d)+'px'); p.style.setProperty('--dy',(Math.sin(a)*d+220)+'px'); p.style.setProperty('--rot',(Math.random()*760-380)+'deg'); var du=1.2+Math.random()*1.4; p.style.animation='confburst '+du+'s cubic-bezier(.15,.6,.4,1) forwards'; document.body.appendChild(p); (function(el,t){setTimeout(function(){el.remove();},t*1000+120);})(p,du);} }
+  function downpour(n){ if(reduce)return; var g=['🍊','🍊','🍊','⛳','🏌️']; for(var i=0;i<(n||24);i++){ var o=document.createElement('div'); o.className='falling-orange'; o.textContent=g[Math.floor(Math.random()*g.length)]; o.style.left=(Math.random()*100)+'vw'; o.style.fontSize=(18+Math.random()*22)+'px'; o.style.setProperty('--spin',(Math.random()*720-360)+'deg'); var du=2.6+Math.random()*2.2; o.style.animation='orangefall '+du+'s linear '+(Math.random()*.5)+'s forwards'; document.body.appendChild(o); (function(el,t){setTimeout(function(){el.remove();},(t+1)*1000);})(o,du);} }
+
+  // ===== scroll ball companion =====
+  var sball=document.createElement('div'); sball.className='scroll-ball'; document.body.appendChild(sball);
+  function moveBall(){ var h=document.documentElement, max=h.scrollHeight-h.clientHeight, p=max>0?h.scrollTop/max:0; sball.style.top=(20+p*(window.innerHeight-52))+'px'; }
+  window.addEventListener('scroll',moveBall,{passive:true}); window.addEventListener('resize',moveBall); moveBall();
+
+  // ===== magnetic buttons =====
+  if(!reduce && fine){ document.querySelectorAll('.hbh-btn,.lodge-link,.cal-btn,.proshop-link').forEach(function(b){ b.style.transition='transform .25s cubic-bezier(.2,.9,.3,1.5)'; b.addEventListener('mousemove',function(e){ var r=b.getBoundingClientRect(); b.style.transform='translate('+((e.clientX-(r.left+r.width/2))*0.35)+'px,'+((e.clientY-(r.top+r.height/2))*0.5)+'px)'; }); b.addEventListener('mouseleave',function(){ b.style.transform=''; }); }); }
+
+  // ===== FORE! click bursts =====
+  if(!reduce){ document.addEventListener('click',function(e){ if(e.target.closest('a,button,input,textarea,select,label,.ticket,.team,.hero-mark,.closing-mark,#putt-modal,#putt-open')) return; var f=document.createElement('div'); f.className='fore-pop'; f.textContent='FORE!'; f.style.left=e.clientX+'px'; f.style.top=e.clientY+'px'; document.body.appendChild(f); setTimeout(function(){f.remove();},1000); }); }
+
+  // ===== Konami party mode =====
+  var seq=['arrowup','arrowup','arrowdown','arrowdown','arrowleft','arrowright','arrowleft','arrowright','b','a'], idx=0, partying=false;
+  window.addEventListener('keydown',function(e){ var k=(e.key||'').toLowerCase(); if(k===seq[idx]){ idx++; if(idx===seq.length){ idx=0; party(); } } else { idx=(k===seq[0])?1:0; } });
+  function party(){ if(partying)return; partying=true; document.body.classList.add('party'); var iv=setInterval(function(){downpour(12);},500); for(var k=0;k<8;k++){(function(k){setTimeout(function(){confetti(Math.random()*window.innerWidth, window.innerHeight*0.3, 50);},k*400);})(k);} var t=document.createElement('div'); t.className='boyz-toast'; t.textContent='🎉 PARTY MODE 🎉'; document.body.appendChild(t); requestAnimationFrame(function(){t.classList.add('show');}); setTimeout(function(){ clearInterval(iv); document.body.classList.remove('party'); t.classList.remove('show'); setTimeout(function(){t.remove();},500); partying=false; },6500); }
+
+  // ===== putting mini-game =====
+  var openBtn=document.createElement('button'); openBtn.id='putt-open'; openBtn.textContent='⛳ Putt'; document.body.appendChild(openBtn);
+  var modal=document.createElement('div'); modal.id='putt-modal';
+  modal.innerHTML='<div class="putt-card"><h3>Sink a Putt</h3><div class="putt-sub">drag back from the ball, aim, release</div><canvas id="putt-canvas" width="300" height="380"></canvas><div class="putt-msg" id="putt-msg"></div><div class="putt-stats"><span>Made<b id="putt-made">0</b></span><span>Best streak<b id="putt-streak">0</b></span></div><button class="putt-close" id="putt-close">Close</button></div>';
+  document.body.appendChild(modal);
+  var cv=document.getElementById('putt-canvas'), ctx=cv.getContext('2d'), W=cv.width, Hh=cv.height;
+  var made=parseInt(localStorage.getItem('putt-made')||'0',10), best=parseInt(localStorage.getItem('putt-best')||'0',10), streak=0;
+  var ball={x:W/2,y:Hh-50,r:7,vx:0,vy:0,moving:false}, hole={x:W/2,y:64,r:12};
+  var dragging=false, dragCur=null, raf=null;
+  function draw(){ ctx.fillStyle='#4f8544'; ctx.fillRect(0,0,W,Hh); ctx.strokeStyle='rgba(255,255,255,.05)'; ctx.lineWidth=10; for(var y=0;y<Hh;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    ctx.fillStyle='#16210f'; ctx.beginPath(); ctx.ellipse(hole.x,hole.y,hole.r,hole.r*0.72,0,0,6.3); ctx.fill();
+    ctx.strokeStyle='#e8e2d4'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(hole.x,hole.y); ctx.lineTo(hole.x,hole.y-36); ctx.stroke();
+    ctx.fillStyle='#DD7A34'; ctx.beginPath(); ctx.moveTo(hole.x,hole.y-36); ctx.lineTo(hole.x+18,hole.y-30); ctx.lineTo(hole.x,hole.y-24); ctx.closePath(); ctx.fill();
+    if(dragging && dragCur){ var dx=ball.x-dragCur.x, dy=ball.y-dragCur.y; ctx.setLineDash([5,5]); ctx.strokeStyle='rgba(255,255,255,.7)'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(ball.x,ball.y); ctx.lineTo(ball.x+dx*1.3, ball.y+dy*1.3); ctx.stroke(); ctx.setLineDash([]); }
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(ball.x,ball.y,ball.r,0,6.3); ctx.fill(); ctx.strokeStyle='rgba(0,0,0,.18)'; ctx.lineWidth=1; ctx.stroke(); }
+  function reset(){ ball.x=W/2; ball.y=Hh-50; ball.vx=0; ball.vy=0; ball.moving=false; }
+  function msg(t){ document.getElementById('putt-msg').textContent=t; }
+  function upd(){ document.getElementById('putt-made').textContent=made; document.getElementById('putt-streak').textContent=best; }
+  function sunk(){ ball.moving=false; made++; streak++; if(streak>best){best=streak; localStorage.setItem('putt-best',best);} localStorage.setItem('putt-made',made); upd(); msg('Sunk it! 🎉'); confetti(window.innerWidth/2, window.innerHeight*0.42, 70); hole.x=42+Math.random()*(W-84); setTimeout(reset,350); }
+  function miss(m){ ball.moving=false; streak=0; upd(); msg(m||'Missed — try again'); setTimeout(reset,350); }
+  function step(){ if(!modal.classList.contains('open')){ raf=null; return; } if(ball.moving){ ball.x+=ball.vx; ball.y+=ball.vy; ball.vx*=0.975; ball.vy*=0.975; var d=Math.hypot(ball.x-hole.x,ball.y-hole.y), sp=Math.hypot(ball.vx,ball.vy); if(d<hole.r && sp<3.2){ sunk(); } else if(ball.x<ball.r||ball.x>W-ball.r||ball.y<ball.r||ball.y>Hh-ball.r){ miss('Off the green!'); } else if(sp<0.16){ miss(); } } draw(); raf=requestAnimationFrame(step); }
+  function P(e){ var r=cv.getBoundingClientRect(); var cx=(e.touches?e.touches[0].clientX:e.clientX)-r.left, cy=(e.touches?e.touches[0].clientY:e.clientY)-r.top; return {x:cx*(W/r.width), y:cy*(Hh/r.height)}; }
+  cv.addEventListener('pointerdown',function(e){ if(ball.moving)return; var p=P(e); if(Math.hypot(p.x-ball.x,p.y-ball.y)<44){ dragging=true; dragCur=p; } });
+  cv.addEventListener('pointermove',function(e){ if(dragging){ dragCur=P(e); } });
+  window.addEventListener('pointerup',function(){ if(dragging){ dragging=false; if(dragCur){ var dx=ball.x-dragCur.x, dy=ball.y-dragCur.y, pw=Math.min(Math.hypot(dx,dy),130); if(pw>7){ var k=0.13; ball.vx=dx*k; ball.vy=dy*k; ball.moving=true; msg(''); } } dragCur=null; } });
+  openBtn.addEventListener('click',function(){ modal.classList.add('open'); upd(); reset(); msg('drag back from the ball & release'); if(!raf) raf=requestAnimationFrame(step); });
+  document.getElementById('putt-close').addEventListener('click',function(){ modal.classList.remove('open'); });
+  modal.addEventListener('click',function(e){ if(e.target===modal) modal.classList.remove('open'); });
 })();
 </script>
 </body>
