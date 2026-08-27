@@ -1347,10 +1347,10 @@
     document.body.appendChild(t); requestAnimationFrame(function(){t.classList.add('show');});
     setTimeout(function(){ t.classList.remove('show'); setTimeout(function(){t.remove();},500); },2600);
   }
-  // citrus cursor trail in the hero
-  var hero=document.querySelector('.hero'), lastT=0;
-  if(hero && !reduce && fine){
-    hero.addEventListener('mousemove', function(e){
+  // citrus cursor trail everywhere
+  var lastT=0;
+  if(!reduce && fine){
+    document.addEventListener('mousemove', function(e){
       var now=Date.now(); if(now-lastT<70) return; lastT=now;
       var s=document.createElement('div'); s.className='cursor-cit'; s.textContent=Math.random()<.5?'🍊':'\u2726';
       s.style.left=e.clientX+'px'; s.style.top=e.clientY+'px';
