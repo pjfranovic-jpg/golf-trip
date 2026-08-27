@@ -406,6 +406,24 @@
   .stakes-text{max-width:540px; margin:0 auto; font-family:'Fraunces',serif; font-size:1.05rem; line-height:1.5; color:var(--bone);}
   .stakes-text b{color:var(--fruit-light); font-weight:600;}
   .info-card.wide-card{grid-column:1 / -1;}
+  /* ===== fun animations ===== */
+  .scroll-progress{position:fixed; top:0; left:0; height:3px; width:0; z-index:200; background:linear-gradient(90deg,var(--fruit-dark),var(--fruit-light)); box-shadow:0 0 8px rgba(217,120,52,.5); transition:width .08s linear;}
+  .ticket,.dossier,.info-card,.team,.weather-card{transition:transform .28s cubic-bezier(.2,.7,.3,1), box-shadow .28s ease;}
+  .ticket:hover,.info-card:hover,.weather-card:hover{transform:translateY(-5px);}
+  .dossier:hover,.team:hover{transform:translateY(-4px);}
+  .hbh-btn,.lodge-link,.cal-btn,.proshop-link{transition:transform .2s ease, background .2s ease;}
+  .hbh-btn:hover,.lodge-link:hover,.cal-btn:hover,.proshop-link:hover{transform:translateY(-2px);}
+  @keyframes vspulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+  .vs{animation:vspulse 2.4s ease-in-out infinite;}
+  .hero-mark,.closing-mark{cursor:pointer;}
+  .falling-orange{position:fixed; top:-6vh; z-index:150; pointer-events:none; will-change:transform,opacity;}
+  @keyframes orangefall{0%{opacity:0;}8%{opacity:1;}100%{transform:translateY(112vh) rotate(var(--spin)); opacity:1;}}
+  #cd-s{display:inline-block; transition:transform .12s ease;}
+  #cd-s.cd-pop{transform:scale(1.28);}
+  @media (prefers-reduced-motion: reduce){
+    .vs{animation:none;}
+    .ticket,.dossier,.info-card,.team,.weather-card,.hbh-btn,.lodge-link,.cal-btn,.proshop-link{transition:none;}
+  }
 </style>
 </head>
 <body>
@@ -442,6 +460,7 @@
 </svg>
 
 
+<div class="scroll-progress" id="scrollbar"></div>
 <div class="countdown" role="timer" aria-label="Countdown to the first tee">
   <span class="cd-dot" aria-hidden="true"></span>
   <span class="cd-label">First tee in</span>
@@ -1223,6 +1242,32 @@
         mode('Typical \u00b7 '+agg[19].n+'-year average'); upd('Historical averages for Nov 19\u201322');
       }).catch(fail);
   }
+})();
+</script>
+<script>
+(function(){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // scroll progress
+  var sb=document.getElementById('scrollbar');
+  function prog(){var h=document.documentElement, max=h.scrollHeight-h.clientHeight; if(sb)sb.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  window.addEventListener('scroll',prog,{passive:true}); prog();
+  // count-up numbers on reveal
+  function fmt(n,dec,comma){var s=dec>0?n.toFixed(dec):Math.round(n).toString(); if(comma){var p=s.split('.'); p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,','); s=p.join('.');} return s;}
+  function setup(el,dec){var t=el.textContent, m=t.match(/([^\d]*)([\d,.]+)(.*)/); if(!m)return null; return {el:el,target:parseFloat(m[2].replace(/,/g,'')),dec:dec,comma:m[2].indexOf(',')>-1,prefix:m[1],suffix:m[3],final:t,done:false};}
+  var items=[];
+  var fig=document.querySelector('.cost-total-fig'); if(fig){var c=setup(fig,0); if(c)items.push(c);}
+  document.querySelectorAll('.team-total b').forEach(function(b){var c=setup(b,1); if(c)items.push(c);});
+  function run(c){if(reduce){c.el.textContent=c.final;return;} var start=null,dur=1100; function step(ts){if(!start)start=ts; var p=Math.min((ts-start)/dur,1), e=1-Math.pow(1-p,3); c.el.textContent=c.prefix+fmt(c.target*e,c.dec,c.comma)+c.suffix; if(p<1)requestAnimationFrame(step); else c.el.textContent=c.final;} requestAnimationFrame(step);}
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){var c=e.target.__c; if(e.isIntersecting&&c&&!c.done){c.done=true; run(c); io.unobserve(e.target);}});},{threshold:.6});
+    items.forEach(function(c){c.el.__c=c; c.el.textContent=reduce?c.final:(c.prefix+fmt(0,c.dec,c.comma)+c.suffix); io.observe(c.el);});
+  }
+  // orange rain easter egg
+  function rain(){ if(reduce)return; var glyphs=['\ud83c\udf4a','\ud83c\udf4a','\ud83c\udf4a','\u26f3','\ud83c\udfcc\ufe0f']; for(var i=0;i<30;i++){ var o=document.createElement('div'); o.className='falling-orange'; o.textContent=glyphs[Math.floor(Math.random()*glyphs.length)]; o.style.left=(Math.random()*100)+'vw'; o.style.fontSize=(18+Math.random()*20)+'px'; o.style.setProperty('--spin',(Math.random()*720-360)+'deg'); var dur=2.6+Math.random()*2.2; o.style.animation='orangefall '+dur+'s linear '+(Math.random()*0.5)+'s forwards'; document.body.appendChild(o); (function(el,d){setTimeout(function(){el.remove();},(d+1)*1000);})(o,dur); } }
+  document.querySelectorAll('.hero-mark, .closing-mark').forEach(function(m){m.addEventListener('click',rain);});
+  // countdown seconds pop
+  var cds=document.getElementById('cd-s');
+  if(cds && 'MutationObserver' in window && !reduce){ var mo=new MutationObserver(function(){cds.classList.add('cd-pop'); setTimeout(function(){cds.classList.remove('cd-pop');},120);}); mo.observe(cds,{childList:true,characterData:true,subtree:true}); }
 })();
 </script>
 </body>
