@@ -446,7 +446,7 @@
   #putt-open:hover{background:var(--green-dark); transform:translateY(-2px);}
   #putt-modal{position:fixed; inset:0; z-index:400; background:rgba(20,14,8,.72); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center;}
   #putt-modal.open{display:flex;}
-  .putt-card{background:var(--bone); border-radius:16px; padding:20px; width:min(92vw,340px); text-align:center; box-shadow:0 30px 70px -20px rgba(0,0,0,.7);}
+  .putt-card{background:var(--bone); border-radius:16px; padding:20px; width:min(94vw,420px); text-align:center; box-shadow:0 30px 70px -20px rgba(0,0,0,.7);}
   .putt-card h3{font-family:'Fraunces',serif; color:var(--orange-dark); font-size:1.4rem;}
   .putt-card .putt-sub{font-size:11.5px; opacity:.65; margin:2px 0 12px;}
   #putt-canvas{border-radius:12px; touch-action:none; cursor:grab; display:block; margin:0 auto; max-width:100%;}
@@ -1404,11 +1404,11 @@
   // ===== putting mini-game =====
   var openBtn=document.createElement('button'); openBtn.id='putt-open'; openBtn.textContent='⛳ Putt'; document.body.appendChild(openBtn);
   var modal=document.createElement('div'); modal.id='putt-modal';
-  modal.innerHTML='<div class="putt-card"><h3>Sink a Putt</h3><div class="putt-sub">drag back from the ball, aim, release</div><canvas id="putt-canvas" width="300" height="380"></canvas><div class="putt-msg" id="putt-msg"></div><div class="putt-stats"><span>Made<b id="putt-made">0</b></span><span>Best streak<b id="putt-streak">0</b></span></div><button class="putt-close" id="putt-close">Close</button></div>';
+  modal.innerHTML='<div class="putt-card"><h3>Sink a Putt</h3><div class="putt-sub">drag back from the ball, aim, release</div><canvas id="putt-canvas" width="360" height="520"></canvas><div class="putt-msg" id="putt-msg"></div><div class="putt-stats"><span>Made<b id="putt-made">0</b></span><span>Best streak<b id="putt-streak">0</b></span></div><button class="putt-close" id="putt-close">Close</button></div>';
   document.body.appendChild(modal);
   var cv=document.getElementById('putt-canvas'), ctx=cv.getContext('2d'), W=cv.width, Hh=cv.height;
   var made=parseInt(localStorage.getItem('putt-made')||'0',10), best=parseInt(localStorage.getItem('putt-best')||'0',10), streak=0;
-  var ball={x:W/2,y:Hh-50,r:7,vx:0,vy:0,moving:false}, hole={x:W/2,y:64,r:12};
+  var ball={x:W/2,y:Hh-60,r:8,vx:0,vy:0,moving:false}, hole={x:W/2,y:74,r:15};
   var dragging=false, dragCur=null, raf=null;
   function draw(){ ctx.fillStyle='#4f8544'; ctx.fillRect(0,0,W,Hh); ctx.strokeStyle='rgba(255,255,255,.05)'; ctx.lineWidth=10; for(var y=0;y<Hh;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
     ctx.fillStyle='#16210f'; ctx.beginPath(); ctx.ellipse(hole.x,hole.y,hole.r,hole.r*0.72,0,0,6.3); ctx.fill();
@@ -1416,16 +1416,16 @@
     ctx.fillStyle='#DD7A34'; ctx.beginPath(); ctx.moveTo(hole.x,hole.y-36); ctx.lineTo(hole.x+18,hole.y-30); ctx.lineTo(hole.x,hole.y-24); ctx.closePath(); ctx.fill();
     if(dragging && dragCur){ var dx=ball.x-dragCur.x, dy=ball.y-dragCur.y; ctx.setLineDash([5,5]); ctx.strokeStyle='rgba(255,255,255,.7)'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(ball.x,ball.y); ctx.lineTo(ball.x+dx*1.3, ball.y+dy*1.3); ctx.stroke(); ctx.setLineDash([]); }
     ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(ball.x,ball.y,ball.r,0,6.3); ctx.fill(); ctx.strokeStyle='rgba(0,0,0,.18)'; ctx.lineWidth=1; ctx.stroke(); }
-  function reset(){ ball.x=W/2; ball.y=Hh-50; ball.vx=0; ball.vy=0; ball.moving=false; }
+  function reset(){ ball.x=W/2; ball.y=Hh-60; ball.vx=0; ball.vy=0; ball.moving=false; }
   function msg(t){ document.getElementById('putt-msg').textContent=t; }
   function upd(){ document.getElementById('putt-made').textContent=made; document.getElementById('putt-streak').textContent=best; }
-  function sunk(){ ball.moving=false; made++; streak++; if(streak>best){best=streak; localStorage.setItem('putt-best',best);} localStorage.setItem('putt-made',made); upd(); msg('Sunk it! 🎉'); confetti(window.innerWidth/2, window.innerHeight*0.42, 70); hole.x=42+Math.random()*(W-84); setTimeout(reset,350); }
+  function sunk(){ ball.moving=false; made++; streak++; if(streak>best){best=streak; localStorage.setItem('putt-best',best);} localStorage.setItem('putt-made',made); upd(); msg('Sunk it! 🎉'); confetti(window.innerWidth/2, window.innerHeight*0.42, 70); hole.x=48+Math.random()*(W-96); setTimeout(reset,350); }
   function miss(m){ ball.moving=false; streak=0; upd(); msg(m||'Missed — try again'); setTimeout(reset,350); }
   function step(){ if(!modal.classList.contains('open')){ raf=null; return; } if(ball.moving){ ball.x+=ball.vx; ball.y+=ball.vy; ball.vx*=0.975; ball.vy*=0.975; var d=Math.hypot(ball.x-hole.x,ball.y-hole.y), sp=Math.hypot(ball.vx,ball.vy); if(d<hole.r && sp<3.2){ sunk(); } else if(ball.x<ball.r||ball.x>W-ball.r||ball.y<ball.r||ball.y>Hh-ball.r){ miss('Off the green!'); } else if(sp<0.16){ miss(); } } draw(); raf=requestAnimationFrame(step); }
   function P(e){ var r=cv.getBoundingClientRect(); var cx=(e.touches?e.touches[0].clientX:e.clientX)-r.left, cy=(e.touches?e.touches[0].clientY:e.clientY)-r.top; return {x:cx*(W/r.width), y:cy*(Hh/r.height)}; }
-  cv.addEventListener('pointerdown',function(e){ if(ball.moving)return; var p=P(e); if(Math.hypot(p.x-ball.x,p.y-ball.y)<44){ dragging=true; dragCur=p; } });
-  cv.addEventListener('pointermove',function(e){ if(dragging){ dragCur=P(e); } });
-  window.addEventListener('pointerup',function(){ if(dragging){ dragging=false; if(dragCur){ var dx=ball.x-dragCur.x, dy=ball.y-dragCur.y, pw=Math.min(Math.hypot(dx,dy),130); if(pw>7){ var k=0.13; ball.vx=dx*k; ball.vy=dy*k; ball.moving=true; msg(''); } } dragCur=null; } });
+  cv.addEventListener('pointerdown',function(e){ if(ball.moving)return; var p=P(e); if(Math.hypot(p.x-ball.x,p.y-ball.y)<64){ dragging=true; dragCur=p; } });
+  window.addEventListener('pointermove',function(e){ if(dragging){ dragCur=P(e); } });
+  window.addEventListener('pointerup',function(){ if(dragging){ dragging=false; if(dragCur){ var dx=ball.x-dragCur.x, dy=ball.y-dragCur.y, pw=Math.min(Math.hypot(dx,dy),200); if(pw>7){ var k=0.1; var sc=pw/Math.max(Math.hypot(dx,dy),1); dx*=sc; dy*=sc; ball.vx=dx*k; ball.vy=dy*k; ball.moving=true; msg(''); } } dragCur=null; } });
   openBtn.addEventListener('click',function(){ modal.classList.add('open'); upd(); reset(); msg('drag back from the ball & release'); if(!raf) raf=requestAnimationFrame(step); });
   document.getElementById('putt-close').addEventListener('click',function(){ modal.classList.remove('open'); });
   modal.addEventListener('click',function(e){ if(e.target===modal) modal.classList.remove('open'); });
