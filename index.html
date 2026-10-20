@@ -73,6 +73,8 @@
     text-transform:uppercase; white-space:nowrap; font-weight:600; opacity:.7;
   }
   nav a:hover{opacity:1; color:var(--orange-dark);}
+  nav a.brand{opacity:1; font-size:15px; letter-spacing:.02em; color:var(--orange-dark); transition:color .2s ease;}
+  nav a.brand:hover{color:var(--green-dark);}
   a:focus-visible, button:focus-visible{outline:2px solid var(--orange-dark); outline-offset:3px;}
 
   /* ---------- hero ---------- */
@@ -506,7 +508,7 @@
   <span class="cd-when">&middot; Nov 19, 2026</span>
 </div>
 <nav>
-  <div class="brand"><svg class="icon" style="width:20px;height:20px;margin-right:2px;"><use href="#ic-orange" xlink:href="#ic-orange"/></svg>CABOT CITRUS BOYZ</div>
+  <a class="brand" href="#" id="toTop" aria-label="Back to top"><svg class="icon" style="width:20px;height:20px;margin-right:2px;"><use href="#ic-orange" xlink:href="#ic-orange"/></svg>CABOT CITRUS BOYZ</a>
   <div class="links">
     <a href="#courses">Courses</a>
     <a href="#thursday">Thu</a>
@@ -1231,7 +1233,7 @@
 <script>
 (function(){
   // active nav highlight
-  var links=[].slice.call(document.querySelectorAll('nav a'));
+  var links=[].slice.call(document.querySelectorAll('nav .links a'));
   var map={}; links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
   var secs=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));}).filter(Boolean);
   if('IntersectionObserver' in window){
@@ -1281,6 +1283,8 @@
 <script>
 (function(){
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // logo goes back to the top
+  document.getElementById('toTop').addEventListener('click',function(e){ e.preventDefault(); window.scrollTo({top:0, behavior:reduce?'auto':'smooth'}); if(location.hash) history.replaceState(null,'',location.pathname+location.search); });
   // scroll progress
   var sb=document.getElementById('scrollbar');
   function prog(){var h=document.documentElement, max=h.scrollHeight-h.clientHeight; if(sb)sb.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
